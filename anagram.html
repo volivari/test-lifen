@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+  </head>
+
+  <body>
+    <input type="file" accept="text/plain" onchange="openFile(event)" /><br />
+    <div id="output">
+      ...
+    </div>
+
+    <script type="text/javascript">
+      var openFile = function(event) {
+        var input = event.target;
+
+        var reader = new FileReader();
+        reader.onload = function() {
+          var text = reader.result;
+          var ar = text.split(/\r?\n/);
+
+          var anagrams = groupAnagrams(ar);
+          var node = document.getElementById("output");
+          node.innerText = anagrams;
+          // console.log(anagrams)
+        };
+        reader.readAsText(input.files[0]);
+      };
+
+      var groupAnagrams = function(strs) {
+        const results = {};
+        strs.forEach(str => {
+          const key = str.split("").sort();
+          if (results[key]) {
+            results[key].push(str);
+          } else {
+            results[key] = [str];
+          }
+        });
+        console.log(Object.values(results))
+        return Object.values(results);
+      };
+    </script>
+  </body>
+</html>
